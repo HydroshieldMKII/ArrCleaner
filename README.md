@@ -101,11 +101,28 @@ Run the script via command line:
 python arrCleanUp.py
 ```
 
+### Cron Job
+
+To automate the script, set up a cron job to run it at regular intervals. For example, to run the script every 6 hours, use the following command:
+
+```bash
+0 */6 * * * /usr/bin/python3 /path/to/arrCleanUp.py
+```
+
 ## Example Output
 
-    Found 3 failed torrents in qBittorrent.
-    Successfully marked episode 1234 as failed in Sonarr.
-    Successfully removed 'Example Torrent' from qBittorrent downloads.
+    2024-01-01 13:45:01,901 - INFO - Found 1 failed torrents in qBittorrent above threshold.
+    2024-01-01 13:45:01,901 - WARNING - ---> Processing 'File.mkv'
+    2024-01-01 13:45:01,902 - INFO - Current availability: 5.30%
+    2024-01-01 13:45:01,902 - INFO - Active download time: 24.41 hour(s)
+    2024-01-01 13:45:01,902 - INFO - Media added 24.41 hour(s) ago
+    2024-01-01 13:45:01,902 - INFO - Checking Sonarr...
+    2024-01-01 13:45:01,908 - WARNING - No episode found for title: File.mkv
+    2024-01-01 13:45:01,912 - INFO - Checking Radarr...
+    2024-01-01 13:45:02,551 - INFO - Found movie ID 1234
+    2024-01-01 13:45:02,562 - INFO - Successfully added the torrent to the blocklist in Radarr.
+    2024-01-01 13:45:02,566 - INFO - Successfully removed 'File.mkv' from qBittorrent downloads.
+    2024-01-01 13:45:02,566 - INFO - Cleanup completed.
 
 ## Troubleshooting
 

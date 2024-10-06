@@ -171,7 +171,7 @@ def main():
                 
             
         if RADARR_ENABLED and not media_found:
-            logging.info("Checking Radarr...", title)
+            logging.info("Checking Radarr...")
             movie_id = get_movie_id(title)
             if movie_id:
                 logging.info("Found movie ID %s", movie_id)
