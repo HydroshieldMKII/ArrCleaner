@@ -2,6 +2,12 @@
 
 This script checks for failed downloads in qBittorrent and marks them as failed in Sonarr and Radarr. It ensures that unavailable media is properly blocked or removed based on configurable conditions such as availability, time since added, and active hours. The script is particularly useful for automating media management by cleaning up failed downloads and ensuring that they are handled in your media library.
 
+# Disclaimer
+
+**Work in Progress:** This script is currently under development and may not function as expected. Please use with caution and report any issues you encounter.
+
+This script is provided as-is and may require customization based on your specific setup and requirements. Use it at your own risk and ensure that you understand the script's behavior before running it in your environment. Always back up your data before making changes to your media library.
+
 ## Table of Contents
 
 - [Features](#features)
