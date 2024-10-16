@@ -85,7 +85,7 @@ def get_movie_id(title):
     # Debugging information
     #logging.debug("Radarr Movie Lookup Response: %s", data)
 
-    if len(data) > 0:
+    if len(data) > 0 and 'id' in data[0]:
         return data[0]['id']
     else:
         logging.warning("No movie found for title: %s", title)
