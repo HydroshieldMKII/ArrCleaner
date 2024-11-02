@@ -1,4 +1,4 @@
-# Arr Suit Cleanup Script
+# Arr Suite Cleanup Script
 
 This script checks for failed downloads in a download client and marks them as failed in [Sonarr](https://github.com/Sonarr/Sonarr) and [Radarr](https://github.com/Radarr/Radarr). It ensures that unavailable media is properly blocked or removed based on configurable conditions such as availability, time since added, and active hours. The script is particularly useful for automating media management by cleaning up failed downloads and ensuring that they are handled in your media library.
 
