@@ -1,8 +1,10 @@
-# Arr Cleanup Script
+# Arr Suit Cleanup Script
 
-This script checks for failed downloads in qBittorrent and marks them as failed in Sonarr and Radarr. It ensures that unavailable media is properly blocked or removed based on configurable conditions such as availability, time since added, and active hours. The script is particularly useful for automating media management by cleaning up failed downloads and ensuring that they are handled in your media library.
+This script checks for failed downloads in a download client and marks them as failed in [Sonarr](https://github.com/Sonarr/Sonarr) and [Radarr](https://github.com/Radarr/Radarr). It ensures that unavailable media is properly blocked or removed based on configurable conditions such as availability, time since added, and active hours. The script is particularly useful for automating media management by cleaning up failed downloads and ensuring that they are handled in your media library.
 
 # Disclaimer
+
+**Legal Disclaimer:** This script is provided for educational and informational purposes only. Always obtain permission from content owners before downloading or sharing copyrighted material. The author is not responsible for any misuse or damage caused by this script. Use at your own risk.
 
 **Work in Progress:** This script is currently under development and may not function as expected. Please use with caution and report any issues you encounter.
 
@@ -21,16 +23,18 @@ This script is provided as-is and may require customization based on your specif
 
 ## Features
 
-- Automatically identifies torrents that have stalled or are missing pieces.
+- Automatically identifies downloads that have stalled or are missing pieces.
 - Marks corresponding episodes in Sonarr or movies in Radarr as failed.
-- Removes torrents from qBittorrent based on customizable conditions.
+- Removes downloads from download client based on customizable conditions.
 - Configurable settings for availability, active time, and more.
 - Log output for detailed tracking of the script's actions.
 
 ## Requirements
 
+- Radarr and/or Sonarr instance with API enabled
 - Python 3.x
-- `requests` library (Install via `pip install requests`)
+- `requests` library
+- Download client (e.g., qbittorent) with API enabled
 
 ## Setup
 
@@ -41,12 +45,12 @@ This script is provided as-is and may require customization based on your specif
    ```
 3. Configure the script by editing the following parameters inside the script:
 
-   - **qBittorrent Configuration:**
+   - **Download client configuration:**
 
      ```python
-     QB_URL = "http://localhost:8090/api/v2/"  # Update with your qBittorrent URL
-     QB_USER = "admin"                         # Replace with your qBittorrent username
-     QB_PASSWORD = "changeme"                  # Replace with your qBittorrent password
+     QB_URL = "http://localhost:8090/api/v2/"  # Update with your download client URL
+     QB_USER = "admin"                         # Replace with your download client username
+     QB_PASSWORD = "changeme"                  # Replace with your download client password
      ```
 
    - **Sonarr Configuration:**
@@ -66,45 +70,45 @@ This script is provided as-is and may require customization based on your specif
 
 4. Customize behavior by setting the following parameters:
 
-   - **Torrent Removal:**
+   - **Downloads Removal:**
 
      ```python
-     QB_ALWAYS_REMOVE = False   # Always remove failed torrents, regardless of Sonarr or Radarr check
-     QB_REMOVE_IF_KNOWN = True  # Only remove failed torrents if found in Sonarr or Radarr
+     QB_ALWAYS_REMOVE = False   # Always remove failed downloads, regardless of Sonarr or Radarr check
+     QB_REMOVE_IF_KNOWN = True  # Only remove failed downloads if found in Sonarr or Radarr
      ```
 
-   - **Torrent Filtering:**
+   - **Downloads Filtering:**
      ```python
      MIN_AVAILABILITY = 1.0     # Minimum availability threshold (Recommended: 1.0 for 100%)
      MIN_ACTIVE_HOURS = 24      # Minimum active time before considering availability (e.g., 24 hours)
-     MIN_ADDED_HOURS = 0        # Minimum time since torrent was added (e.g., 0 hours)
+     MIN_ADDED_HOURS = 0        # Minimum time since downloads was added (e.g., 0 hours)
      ```
 
 ## How It Works
 
-1. The script authenticates with qBittorrent using the provided credentials.
-2. It retrieves the list of torrents and filters for stalled or failed downloads based on availability and time conditions.
-3. It checks whether the failed torrent corresponds to an episode in Sonarr or a movie in Radarr:
-   - For Sonarr, it uses the torrent title to parse and search for the episode.
-   - For Radarr, it looks up the movie using the torrent title.
+1. The script authenticates with the download client using the provided credentials.
+2. It retrieves the list of downloads and filters for stalled or failed downloads based on availability and time conditions.
+3. It checks whether the failed downloads corresponds to an episode in Sonarr or a movie in Radarr:
+   - For Sonarr, it uses the downloads title to parse and search for the episode.
+   - For Radarr, it looks up the movie using the downloads title.
 4. If a corresponding episode or movie is found, the script marks the item as failed in Sonarr or Radarr.
-5. Optionally, the torrent is removed from qBittorrent based on the specified conditions.
+5. Optionally, the download can be removed from download client based on the specified conditions.
 
 ## Logs
 
 The script logs all actions and decisions in a log file named `arrCleanUp.log`, including:
 
 - Authentication status
-- Failed torrents found
+- Failed downloads found
 - Media matched in Sonarr or Radarr
-- Actions taken (marked as failed, removed from qBittorrent)
+- Actions taken (marked as failed, removed from download client)
 
 ## Usage
 
 Run the script via command line:
 
 ```bash
-python arrCleanUp.py
+python script.py
 ```
 
 ### Cron Job
@@ -112,12 +116,12 @@ python arrCleanUp.py
 To automate the script, set up a cron job to run it at regular intervals. For example, to run the script every 6 hours, use the following command:
 
 ```bash
-0 */6 * * * /usr/bin/python3 /path/to/arrCleanUp.py
+0 */6 * * * /usr/bin/python3 /path/to/script.py
 ```
 
 ## Example Output
 
-    2024-01-01 13:45:01,901 - INFO - Found 1 failed torrents in qBittorrent above threshold.
+    2024-01-01 13:45:01,901 - INFO - Found 1 failed downloads in download client above threshold.
     2024-01-01 13:45:01,901 - WARNING - ---> Processing 'File.mkv'
     2024-01-01 13:45:01,902 - INFO - Current availability: 5.30%
     2024-01-01 13:45:01,902 - INFO - Active download time: 24.41 hour(s)
@@ -126,12 +130,12 @@ To automate the script, set up a cron job to run it at regular intervals. For ex
     2024-01-01 13:45:01,908 - WARNING - No episode found for title: File.mkv
     2024-01-01 13:45:01,912 - INFO - Checking Radarr...
     2024-01-01 13:45:02,551 - INFO - Found movie ID 1234
-    2024-01-01 13:45:02,562 - INFO - Successfully added the torrent to the blocklist in Radarr.
-    2024-01-01 13:45:02,566 - INFO - Successfully removed 'File.mkv' from qBittorrent downloads.
+    2024-01-01 13:45:02,562 - INFO - Successfully added the downloads to the blocklist in Radarr.
+    2024-01-01 13:45:02,566 - INFO - Successfully removed 'File.mkv' from download client downloads.
     2024-01-01 13:45:02,566 - INFO - Cleanup completed.
 
 ## Troubleshooting
 
-Ensure that Sonarr and Radarr are accessible via the provided URLs and API keys.
-Check the arrCleanUp.log for detailed logs of the script’s operations.
-Verify that qBittorrent is running and the API is enabled in its settings.
+- Ensure that Sonarr and Radarr are accessible via the provided URLs and API keys.
+- Check the arrCleanUp.log for detailed logs of the script’s operations. You can also change the log level to DEBUG for more detailed output (eg. level=logging.DEBUG).
+- Verify that download client is running and the API is enabled in its settings.
