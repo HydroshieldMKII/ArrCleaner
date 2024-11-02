@@ -113,7 +113,13 @@ python script.py
 
 ### Cron Job
 
-To automate the script, set up a cron job to run it at regular intervals. For example, to run the script every 6 hours, use the following command:
+To automate the script, set up a cron job to run it at regular intervals.
+
+```bash
+crontab -e
+```
+
+For example, to run the script every 6 hours add the following line to the crontab file:
 
 ```bash
 0 */6 * * * /usr/bin/python3 /path/to/script.py
